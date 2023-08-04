@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lumberyard-inventory-api
+  labels:
+    app: inventory-api
+    type: web
+spec:
+  template:
+    metadata:
+      labels:
+        app: inventory-api
+        type: web
+    spec:
+      serviceAccountName: api-service-account
+      containers:
+      - name: inventory-api-express
+        image: {{ account id }}.dkr.ecr.{{ region }}.amazonaws.com/lumberyardinventoryapi:{{ tag }}
+        ports:
+        - containerPort: 80
+        env:
+        - name: AWS_REGION
+          value: {{ region }}
+        - name: COGNITO_POOL_ID
+          value: {{ cognito pool id }}
+  replicas: 3
+  selector:
+    matchLabels:
+      type: web
+  revisionHistoryLimit: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: inventory-api-service
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: inventory-api

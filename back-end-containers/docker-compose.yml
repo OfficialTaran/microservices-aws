@@ -1,0 +1,57 @@
+version: "2"
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./api/Dockerfile
+    environment:
+      STAGE: dev
+    env_file:
+      - compose.env
+    networks:
+      - local_dev_bridge
+    volumes:
+      - ./api:/usr/src
+      - ./common:/opt/nodejs
+      - ~/.aws/:/root/.aws:ro
+    command: npm run dev
+
+  inventory-api:
+    build:
+      context: .
+      dockerfile: ./inventoryApi/Dockerfile
+    environment:
+      STAGE: dev
+    env_file:
+      - compose.env
+    networks:
+      - local_dev_bridge
+    volumes:
+      - ./inventoryApi:/usr/src
+      - ./common:/opt/nodejs
+      - ~/.aws/:/root/.aws:ro
+    command: npm run dev
+
+  dynamo-local:
+    image: amazon/dynamodb-local
+    networks:
+      - local_dev_bridge
+    expose:
+      - 8000
+    ports:
+      - "8000:8000"
+  proxy:
+    image: nginx
+    ports:
+      - 3000:3000
+    depends_on:
+      - api
+      - inventory-api
+    networks:
+      - local_dev_bridge
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+
+networks:
+  local_dev_bridge:
+    driver: bridge

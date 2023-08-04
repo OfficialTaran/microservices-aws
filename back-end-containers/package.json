@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "start": "docker compose up --build",
+    "cleanup-docker": "docker compose down"
+  }
+}

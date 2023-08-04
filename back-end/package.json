@@ -1,0 +1,13 @@
+{
+  "name": "delete-test-01",
+  "description": "delete-test-01-description",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "local-db": "docker compose -f utils/docker-compose.yml up -d",
+    "sample-data": "pwsh ./utils/HydrateLocalDB.ps1 -create_tables",
+    "start": "sam local start-api --warm-containers EAGER --docker-network utils_sam_bridge --parameter-overrides STAGE=dev",
+    "deploy": "sam deploy",
+    "cleanup-docker": "pwsh ./utils/RemoveAllContainers.ps1"
+  }
+}

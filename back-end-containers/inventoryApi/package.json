@@ -1,0 +1,22 @@
+{
+  "name": "inventory-api",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon -L index.js"
+  },
+  "dependencies": {
+    "cognito-express": "^3.0.3",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "/opt/nodejs",
+      "/usr/src"
+    ]
+  }
+}

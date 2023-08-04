@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - {{ domain name }}
+    secretName: api-ingress-tls
+  rules:
+  - host: {{ domain name }}
+    http:
+      paths:
+      - path: /api/inventory
+        pathType: Prefix
+        backend:
+          service:
+            name: inventory-api-service
+            port:
+              number: 80
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: api-service
+            port:
+              number: 80

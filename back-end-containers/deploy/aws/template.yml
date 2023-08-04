@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  ApiRegistry:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: lumberyardapi
+  InventoryApiRegistry:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: lumberyardinventoryapi
+
+Outputs:
+  ApiURI:
+    Description: URI of lumberyardAPI ECR repository
+    Value: !GetAtt ApiRegistry.RepositoryUri
+  InventoryApiURI:
+    Description: URI of lumberyardInventoryAPI ECR repository
+    Value: !GetAtt InventoryApiRegistry.RepositoryUri
